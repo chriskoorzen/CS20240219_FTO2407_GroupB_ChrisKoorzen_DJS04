@@ -1,5 +1,6 @@
 /** @import { Book } from './data.js' */
 import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
+import { BookDisplay } from './components.js'
 
 /**
  * Reference to UI DOM elements. Nested objects also reference UI DOM elements, but represent a 
@@ -13,16 +14,8 @@ const ui = {
     showMoreButton: document.querySelector('[data-list-button]'),
     searchEmptyMessage: document.querySelector('[data-list-message]'),
 
-    // Book Display Modal
-    bookDisplay: {
-        modal: document.querySelector('[data-list-active]'),
-        title: document.querySelector('[data-list-title]'),
-        subtitle: document.querySelector('[data-list-subtitle]'),
-        description: document.querySelector('[data-list-description]'),
-        image: document.querySelector('[data-list-image]'),
-        background: document.querySelector('[data-list-blur]'),
-        closeButton: document.querySelector('[data-list-close]'),
-    },
+    // Book Display Component
+    bookDisplay: document.querySelector('[data-display]'),
 
     // Search Modal
     search: {
@@ -82,10 +75,6 @@ ui.search.openButton.addEventListener('click', () => {
 
 ui.settings.openButton.addEventListener('click', () => {
     ui.settings.modal.open = true 
-})
-
-ui.bookDisplay.closeButton.addEventListener('click', () => {
-    ui.bookDisplay.modal.open = false
 })
 
 // --- Process user inputs ---
@@ -172,12 +161,7 @@ ui.itemsList.addEventListener('click', (event) => {
 
     // If an "active" book is set, display this book
     if (active) {
-        ui.bookDisplay.modal.open = true
-        ui.bookDisplay.background.src = active.image
-        ui.bookDisplay.image.src = active.image
-        ui.bookDisplay.title.innerText = active.title
-        ui.bookDisplay.subtitle.innerText = `${authors[active.author]} (${new Date(active.published).getFullYear()})`
-        ui.bookDisplay.description.innerText = active.description
+        ui.bookDisplay.displayBook(active, authors)
     }
 })
 /* ----- END: Setup app component functionality ----- */
@@ -287,6 +271,9 @@ function loadNextPageOfBooks(){
 
 /** Functions necessary to set up the starting state of the Application */
 function initializeBookConnect(){
+    // Register custom components
+    customElements.define('book-display', BookDisplay, {extends: "div"})
+    
     // Load some books for display
     loadNextPageOfBooks()
 
