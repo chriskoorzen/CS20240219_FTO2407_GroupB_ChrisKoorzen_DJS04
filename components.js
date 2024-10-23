@@ -1,5 +1,5 @@
 
-class BookDisplay extends HTMLDialogElement {
+export class BookDisplay extends HTMLDivElement {
 
     static #cssStyles = `
     * {
