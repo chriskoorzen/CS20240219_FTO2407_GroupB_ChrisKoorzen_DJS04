@@ -50,4 +50,15 @@ class BookDisplay extends HTMLDialogElement {
 
     }
 
+    displayBook(bookObj, authorRef){
+        this.background.src = bookObj.image
+        this.image.src = bookObj.image
+        this.titleHeading.innerText = bookObj.title
+        this.subtitle.innerText = `${authorRef[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
+        this.description.innerText = bookObj.description
+
+        this.container.style.display = "block"
+        this.modal.show()
+
+    }
 }
