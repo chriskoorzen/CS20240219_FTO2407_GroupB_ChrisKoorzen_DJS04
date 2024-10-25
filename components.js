@@ -1,6 +1,27 @@
+/** @import { Book } from './data.js' */
 
+
+/**
+ * A standalone component that takes a Book object and pops up a display with all its information.
+ *
+ * @export
+ * @class BookDisplay
+ * @typedef {BookDisplay}
+ * @extends {HTMLDivElement}
+ */
 export class BookDisplay extends HTMLDivElement {
 
+    /**
+     * The CSS values for this standalone element. Note that this element's styling can be controlled
+     * by setting the following variables in the parent's CSS namespace:
+     *      --color-dark            (the primary color for "dark-mode")
+     *      --color-light           (the primary color for "light-mode")
+     *      --color-blue            (the button background color)
+     *      --color-force-light     (the button text color)
+     *
+     * @static
+     * @type {string}
+     */
     static #cssStyles = `
     * {
         box-sizing: border-box;
@@ -132,10 +153,6 @@ export class BookDisplay extends HTMLDivElement {
         
     /* backdrop */
 
-    dialog::backdrop {
-        background-color: rgba(var(--color-dark), 0.3);
-    }
-
     .backdrop {
         display: none;
         background: rgba(var(--color-dark), 0.3);
@@ -151,9 +168,13 @@ export class BookDisplay extends HTMLDivElement {
 
     }
 
+    /** Standard method that invokes on element mount and initializes its setup 
+     * @override
+    */
     connectedCallback() {
         const shadow = this.attachShadow({ mode: "closed" })    // Encapsulate this component completely
 
+        // Create element structure
         this.container = Object.assign(document.createElement("div"), {className: "backdrop"})
         this.modal = Object.assign(document.createElement("dialog"), {className: "overlay"})
 
@@ -201,6 +222,14 @@ export class BookDisplay extends HTMLDivElement {
 
     }
 
+    
+    /**
+     * Main method of this element to display a Book object.
+     * On call, a dialog (non-modal) element will pop up with the Book object's information displayed.
+     *
+     * @param {Book} bookObj A Book object to display
+     * @param {*} authorRef An object that contains UUID's mapped to Author names
+     */
     displayBook(bookObj, authorRef){
         this.background.src = bookObj.image
         this.image.src = bookObj.image
